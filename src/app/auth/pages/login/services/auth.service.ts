@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth, IToken, User } from '../models/auth';
 import { environment } from '../../../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private router: Router) { }
 
   postLogin(obj: Auth) {
     return this._http.post<IToken>(`${environment.API_URL}auth/login`, obj)
@@ -27,7 +28,13 @@ export class AuthService {
   }
 
   get user(): User | null {
-    return localStorage.getItem(environment.Prefix + 'token') === null ? null : JSON.parse(localStorage.getItem(environment.Prefix + 'token')!)
+    return localStorage.getItem(environment.Prefix + 'user') === null ? null : JSON.parse(localStorage.getItem(environment.Prefix + 'user')!)
+  }
+
+  logOut() {
+    localStorage.removeItem(environment.Prefix + 'user');
+    localStorage.removeItem(environment.Prefix + 'token');
+    this.router.navigateByUrl('/auth')
   }
 
 }
