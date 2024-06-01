@@ -15,17 +15,16 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
   obj: Auth = new Auth();
-  constructor(private _service: AuthService, private _router: Router){}
+  constructor(private _service: AuthService, private _router: Router) { }
 
-  login(){
-    // this._service.postLogin(this.obj).subscribe((res) => {
-    //   console.log(res);
-    // })
+  login() {
+    if (this.obj.clave === "" && this.obj.email === "") return;
 
-    if(this.obj.clave !== "" && this.obj.email !== ""){
+    this._service.postLogin(this.obj).subscribe((res) => {
+      this._service.token = res.token;
+      this._service.user = res.user;
       this._router.navigateByUrl('/home')
-    }
-
+    })
   }
 
 }

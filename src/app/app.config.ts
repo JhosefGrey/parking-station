@@ -2,8 +2,11 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideNgVibeToastify } from '@ng-vibe/toastify';
+import { authInterceptor } from '../shared/interceptors/auth.interceptor';
+import { errorInterceptor } from '../shared/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient()]
+  providers: [provideRouter(routes), provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])), provideNgVibeToastify()]
 };
