@@ -5,6 +5,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../auth/pages/login/services/auth.service';
 import { User } from '../../auth/pages/login/models/auth';
+import { AppearanceAnimation, DisappearanceAnimation, ToastTypeEnum } from '@ng-vibe/toastify';
+import { DialogRemoteControl } from '@ng-vibe/dialog';
+import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -31,8 +34,26 @@ export class HomeComponent implements OnInit {
     this._service.getSolicitudes().subscribe((res) => this.solicitudes = res)
   }
 
-  cerrar(solicitud: Solicitud) {
-    // solicitud.entregado = true;
+  cerrar(solicitud: SolicitudVista) {
+
+    const dialog = new DialogRemoteControl(ConfirmModalComponent);
+    dialog.options = {
+      showOverlay: true,
+      animationIn: AppearanceAnimation.BOUNCE_IN,
+      animationOut: DisappearanceAnimation.BOUNCE_OUT,
+    };
+
+    dialog.openDialog({ title: null, content: '¿Está seguro(a) de querer borrar el registro?', textConfirm: null }).subscribe((res) => {
+      if (res.result) {
+
+        this._service.putCerrar({agenteAsignado: this._auth.user?._id!, idSolicitud: solicitud._id}).subscribe(() =>{
+          this._service.sendMessage({ parqueoSolicitado: solicitud.parqueoSolicitado, usuarioSolicitud: solicitud.usuarioSolicitud });
+          this.getPendientes();
+        })
+      }
+    });
+
+ 
   }
 
 

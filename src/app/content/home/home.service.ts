@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io } from 'socket.io-client';
-import { Solicitud, SolicitudVista } from './models/solicitud';
+import { Solicitud, SolicitudUpdate, SolicitudVista } from './models/solicitud';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -25,6 +25,10 @@ export class HomeService {
 
   getSolicitudes() {
     return this._http.get<SolicitudVista[]>(`${environment.API_URL}solicitud/pendientes`)
+  }
+
+  putCerrar(obj: SolicitudUpdate){
+    return this._http.put(`${environment.API_URL}solicitud`, obj)
   }
 
   sendMessage(message: Solicitud) {

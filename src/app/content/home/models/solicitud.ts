@@ -37,3 +37,8 @@ export interface Parqueo {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface SolicitudUpdate {
+    idSolicitud: string,
+    agenteAsignado: string,
+}
