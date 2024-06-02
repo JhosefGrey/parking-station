@@ -18,22 +18,22 @@
 
     <div class="row g-3">
         @for (solicitud of solicitudes; track $index) {
-        <div class="col-12-col-md-6 col-lg-4 animate" *ngIf="solicitud.entregado === false" (click)="cerrar(solicitud)">
+        <div class="col-12-col-md-6 col-lg-4 animate" (click)="cerrar(solicitud)">
             <div class="card ">
                 <div class="card-body">
                     <h3>
-                       Solicitud: {{ solicitud.usuarioSolicitud }}
+                       Solicitud: {{ solicitud.inquilino.nombre }}
                     </h3>
                     <h5>
-                       Parqueo: {{ solicitud.parqueo }}
+                       Parqueo: {{ solicitud.parqueo.codigo }}
                     </h5>
                     <span class="text-muted"> Fecha Solicitud{{ solicitud.fechaSolicitud | date: 'dd/MMM/yyyy HH:mm' }}</span>
                 </div>
             </div>
         </div>
         }
-        @if(getPendientes() === 0) {
-        <h4>Sin solicitudes aún</h4>
+        @empty {
+            <h4>Sin solicitudes aún</h4>
         }
     </div>
 </div>
